@@ -6,8 +6,16 @@ import (
 	"fmt"
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
+	ut "github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
 
 	_ "github.com/lib/pq"
+)
+
+const (
+	addUser = "INSERT INTO users (name, surname, email) VALUES ($1, $2, $3)"
+	getAll  = "SELECT name, surname, email FROM users"
+	getOne  = "SELECT * FROM users WHERE email = $1"
+	delete  = "DELETE FROM users WHERE email = $1"
 )
 
 type Interface interface {
@@ -25,21 +33,29 @@ func NewOfficerRepository(db *sql.DB) *UserRepository {
 }
 
 func (o *UserRepository) Add(ctx context.Context, user *entity.USER) error {
-	query := "INSERT INTO users (name, surname, email) VALUES ($1, $2, $3)"
-	_, err := o.db.ExecContext(
-		ctx, query, user.ID, user.Name, user.Surname)
+	stmt, tx, err := ut.BeginTxP(ctx, o.db, addUser)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	defer tx.Rollback()
 
+	_, err = stmt.ExecContext(ctx, user.ID, user.Name, user.Surname)
 	if err != nil {
 		return fmt.Errorf("failed to insert: %v", err)
 	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transactions: %v", err)
+	}
+
 	return nil
 }
 
 func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
-	query := "SELECT name, surname, email FROM users"
-	rows, err := o.db.QueryContext(ctx, query)
+	rows, err := ut.PrepareContext(ctx, o.db, getAll)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get all records: %v", err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -64,9 +80,14 @@ func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 }
 
 func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER, error) {
-	query := "SELECT * FROM users WHERE email = $1"
+	stmt, err := o.db.PrepareContext(ctx, getOne)
+	if err != nil {
+		return nil, fmt.Errorf("failed to prepare statement: %v", err)
+	}
+	defer stmt.Close()
+
 	var user entity.USER
-	err := o.db.QueryRowContext(ctx, query, email).Scan(
+	err = stmt.QueryRowContext(ctx, email).Scan(
 		&user.ID,
 		&user.Name,
 		&user.Surname,
@@ -82,10 +103,28 @@ func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER
 }
 
 func (o *UserRepository) Delete(ctx context.Context, email string) error {
-	query := "DELETE FROM users WHERE email = $1"
-	_, err := o.db.ExecContext(ctx, query, email)
+	stmt, tx, err := ut.BeginTxP(ctx, o.db, delete)
 	if err != nil {
-		return fmt.Errorf("failed to delete user acc")
+		return fmt.Errorf("failed to begin transaction: %v", err)
 	}
+
+	result, err := stmt.ExecContext(ctx, email)
+	if err != nil {
+		return fmt.Errorf("failed to delete officer: %v", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get affected rows: %v", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no officer found with email: %s", email)
+	}
+
+	if err = tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transactions: %v", err)
+	}
+
 	return nil
 }
