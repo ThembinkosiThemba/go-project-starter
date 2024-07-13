@@ -2,10 +2,10 @@ package postgres
 
 import (
 	"database/sql"
-	// migrate "github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres/migrations"
 	"log"
 	"os"
 
+	"github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres/migrations"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -26,9 +26,9 @@ func PostgresConn() *sql.DB {
 		return nil
 	}
 
-	// if err = migrations.Migrate(db); err != nil {
-	// 	log.Println("failed to perform migrations", err)
-	// }
+	if err = migrations.Migrate(db); err != nil {
+		log.Println("failed to perform migrations", err)
+	}
 	log.Println("connected to postgres")
 
 	return db

@@ -9,9 +9,10 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 - 🏗️ Domain-Driven Design architecture
 - ✅ Complete CRUD (Create, Read, Update, Delete) operations
 - 📅 Event tracking using Mixpanel
+- 🐳 Docker support which makes it easy to deploy project on multiple platforms like GCP, AWS etc
 - 🗄️ Database setup and integration
-  - MongoDB support
-  - PostgreSQL support with advanced features:
+  - 🍃 MongoDB support
+  - 🐘 PostgreSQL support with advanced features:
     - Transaction handling
     - Prepared statements
     - Database migrations
@@ -28,11 +29,16 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 git clone https://github.com/ThembinkosiThemba/go-project-starter.git
 cd golang-project-starter
 ```
-2. Install dependencies and running:
+2. Install dependencies and run the roject:
 
 ```bash
 go mod tidy
 make run
+```
+
+If you don't have `Make` installed, you can run 
+```bash
+go run cmd/main.go
 ```
 
 3. Set up your environment variables (copy `.env.example` to `.env` and fill in your variables)
@@ -43,18 +49,40 @@ make run
 
 ### MongoDB
 
-1. Ensure you have MongoDB installed and running
+1. Ensure you have MongoDB installed and running. Alternatively, you can use [Mongo DB Atlas](https://www.mongodb.com/cloud/atlas/register), create a project, and get the connection string.
 2. Update the MongoDB connection string in your `.env` file
 
 ### PostgreSQL
 
-1. Install PostgreSQL if you haven't already
-2. Create a new database for your project
+1. Install PostgreSQL if you haven't already.
+2. Create a new database for your project.
 3. Update the PostgreSQL connection details in your `.env` file
 4. The migrations will automatically run when you run the project.
 
+Alternatively, you can use solutions like [Aiven](https://aiven.io/) which has completely hosted db solutions. Think of it as Atlas, and it's completely free.
+
+### Docker setup
+
+Open the [Dockerfile](Dockerfile) and rename make changes to the following line (`/go-project-starter`) to reflect the name of the project you are building.
+```Dockerfile
+RUN CGO_ENABLED=0 GOOS=linux go build -o /go-project-starter ./cmd/main.go
+
+and 
+
+CMD [ "/go-project-starter" ]
+```
+
+If you are building say `social-media-app`, then you should have:
+```Dockerfile
+RUN CGO_ENABLED=0 GOOS=linux go build -o /social-media-app ./cmd/main.go
+
+and
+
+CMD [ "social-media-app" ]
+```
+
 ### Mixpanel
-Login in to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
+This project also has support for event tracking using Mixpanel. Login to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
 ## 🛠️ Customization
 
