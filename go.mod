@@ -9,6 +9,7 @@ require (
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
+	github.com/mixpanel/mixpanel-go v1.2.1
 	go.mongodb.org/mongo-driver v1.16.0
 )
 

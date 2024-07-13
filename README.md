@@ -8,6 +8,7 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 
 - 🏗️ Domain-Driven Design architecture
 - ✅ Complete CRUD (Create, Read, Update, Delete) operations
+- 📅 Event tracking using Mixpanel
 - 🗄️ Database setup and integration
   - MongoDB support
   - PostgreSQL support with advanced features:
@@ -51,6 +52,9 @@ make run
 2. Create a new database for your project
 3. Update the PostgreSQL connection details in your `.env` file
 4. The migrations will automatically run when you run the project.
+
+### Mixpanel
+Login in to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
 ## 🛠️ Customization
 
