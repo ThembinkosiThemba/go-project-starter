@@ -29,6 +29,7 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 git clone https://github.com/ThembinkosiThemba/go-project-starter.git
 cd golang-project-starter
 ```
+
 2. Install dependencies and run the roject:
 
 ```bash
@@ -36,17 +37,40 @@ go mod tidy
 make run
 ```
 
-If you don't have `Make` installed, you can run 
+If you don't have `Make` installed, you can run
+
 ```bash
 go run cmd/main.go
 ```
 
 3. Set up your environment variables (copy `.env.example` to `.env` and fill in your variables)
 
-## 🏗️ Project Structure
+## 🏗️ Project Setup
 
 ## 💾 Database Setup
 
+Depending on which database you are going to be using, make sure you update the `main.go` initialization lines so it works perfectly for your choice. By default, this project uses `Mongo DB` and this code is as follows:
+```golang
+userRepo, err := config.InitializeRepositoriesMongo()
+if err != nil {
+  log.Fatal(err)
+}
+
+userUsecase := config.InitializeUsecasesMongo(userRepo)
+```
+
+Notice we are using these two mongo functions which are `InitializeRepositoriesMongo` and `InitializeUsecasesMongo`
+
+If for example you want to use Postgres, you will update these functions and use `InitializeRepositoriesPostgres` and `InitializeUsecasesPostgres`:
+```golang
+userRepo, err := config.InitializeRepositoriesPostgres()
+if err != nil {
+  log.Fatal(err)
+}
+
+userUsecase := config.InitializeUsecasesPostgres(userRepo)
+
+```
 ### MongoDB
 
 1. Ensure you have MongoDB installed and running. Alternatively, you can use [Mongo DB Atlas](https://www.mongodb.com/cloud/atlas/register), create a project, and get the connection string.
@@ -64,15 +88,17 @@ Alternatively, you can use solutions like [Aiven](https://aiven.io/) which has c
 ### Docker setup
 
 Open the [Dockerfile](Dockerfile) and rename make changes to the following line (`/go-project-starter`) to reflect the name of the project you are building.
+
 ```Dockerfile
 RUN CGO_ENABLED=0 GOOS=linux go build -o /go-project-starter ./cmd/main.go
 
-and 
+and
 
 CMD [ "/go-project-starter" ]
 ```
 
 If you are building say `social-media-app`, then you should have:
+
 ```Dockerfile
 RUN CGO_ENABLED=0 GOOS=linux go build -o /social-media-app ./cmd/main.go
 
@@ -82,6 +108,7 @@ CMD [ "social-media-app" ]
 ```
 
 ### Mixpanel
+
 This project also has support for event tracking using Mixpanel. Login to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
 ## 🛠️ Customization
@@ -89,7 +116,7 @@ This project also has support for event tracking using Mixpanel. Login to [Mixpa
 To add a new entity:
 
 1. Create a new file in `internal/entity` for your entity
-2. Implement repository interfaces in `internal/infrastructure` and choose either database.
+2. Implement repository interfaces in `internal/repository` and choose either database.
 3. Create use cases in `internal/application/usecase`
 4. Add HTTP handlers in `internal/routes/handler`
 5. Update routes in `internal/routes/handler/routes.go`

@@ -5,11 +5,7 @@ type Login struct {
 	Password string `json:"password" validate:"required"`
 }
 
-type Delete struct {
-	Email string `json:"email" validate:"required"`
-}
-
-type Profile struct {
+type Email struct {
 	Email string `json:"email" validate:"required"`
 }
 

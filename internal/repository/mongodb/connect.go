@@ -35,7 +35,7 @@ func MongoConnect(dbName string) (*mongo.Database, error) {
 		return nil, err
 	}
 
-	log.Println("connected to mongo db")
+	log.Println("Connected to Mongo DB")
 
 	db := client.Database(dbName)
 	return db, nil

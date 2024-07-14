@@ -5,7 +5,7 @@ import (
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 
-	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres/user"
+	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
 )
 

@@ -1,6 +1,7 @@
 package validate
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 
@@ -28,6 +29,10 @@ func ValidateUser(user *entity.USER) error {
 
 	if err := IsEmailValid(user.Email); err != nil {
 		return err
+	}
+
+	if user.Email == "" || user.Name == "" || user.Surname== "" {
+		return errors.New("file in all values")
 	}
 	return nil
 }

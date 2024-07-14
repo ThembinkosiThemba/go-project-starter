@@ -2,10 +2,10 @@ package config
 
 import (
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
-	mongo "github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/mongodb"
-	mongoRepo "github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/mongodb/user"
-	"github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres"
-	postgresRepo "github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres/user"
+	mongo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb"
+	mongoRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
+	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres"
+	postgresRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -32,7 +32,7 @@ func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, er
 	return userRepo, nil
 }
 
-func InitializeUsecases(userRepo *postgresRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
+func InitializeUsecasesPostgres(userRepo *postgresRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
 	userUseCase = usecase.NewUserUsecase(userRepo)
 	return userUseCase
 }

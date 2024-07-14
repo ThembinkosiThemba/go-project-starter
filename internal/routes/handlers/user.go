@@ -76,7 +76,7 @@ func (h *UserHandler) GetAllUsers(c *gin.Context) {
 func (h *UserHandler) Delete(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
-	var request dto.Delete
+	var request dto.Email
 	if err := c.BindJSON(&request); err != nil {
 		httpRes.WriteJSON(c, http.StatusBadRequest, 0, nil, err.Error())
 		return

@@ -8,17 +8,10 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
-func MigrateEndPoint(c *gin.Context) {
-	var db *sql.DB
-	Migrate(db)
-}
-
 func Migrate(db *sql.DB) error {
-	path := "internal/infrastructure/postgres/migrations"
+	path := "internal/repository/postgres/migrations"
 
 	files, err := os.ReadDir(path)
 	if err != nil {

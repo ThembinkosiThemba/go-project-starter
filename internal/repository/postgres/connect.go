@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/ThembinkosiThemba/go-project-starter/internal/infrastructure/postgres/migrations"
+	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/migrations"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -15,6 +15,8 @@ func PostgresConn() *sql.DB {
 	if err != nil {
 		return nil
 	}
+
+	// remember to set the env variable on your file
 	dbUrl := os.Getenv("POSTGRES_URL")
 	db, err := sql.Open("postgres", dbUrl)
 	if err != nil {
