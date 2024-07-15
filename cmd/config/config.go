@@ -10,6 +10,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// InitializeRepositoriesMongo sets up and returns a MongoDB user repository.
+// It establishes a connection to the MongoDB database and initializes the user repository.
 func InitializeRepositoriesMongo() (userRepo *mongoRepo.UserRepository, err error) {
 	db, err := mongo.MongoConnect("users")
 	if err != nil {
@@ -20,11 +22,15 @@ func InitializeRepositoriesMongo() (userRepo *mongoRepo.UserRepository, err erro
 	return userRepo, nil
 }
 
+// InitializeUsecasesMongo creates and returns a user usecase with a MongoDB repository.
+// It takes a MongoDB user repository as input and initializes the user usecase.
 func InitializeUsecasesMongo(userRepo *mongoRepo.UserRepository) (userCase *usecase.UserUsecase) {
 	userCase = usecase.NewUserUsecase(userRepo)
 	return userCase
 }
 
+// InitializeRepositoriesPostgres sets up and returns a PostgreSQL user repository.
+// It establishes a connection to the PostgreSQL database and initializes the user repository.
 func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, err error) {
 	db := postgres.PostgresConn()
 
@@ -32,6 +38,8 @@ func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, er
 	return userRepo, nil
 }
 
+// InitializeUsecasesPostgres creates and returns a user usecase with a PostgreSQL repository.
+// It takes a PostgreSQL user repository as input and initializes the user usecase.
 func InitializeUsecasesPostgres(userRepo *postgresRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
 	userUseCase = usecase.NewUserUsecase(userRepo)
 	return userUseCase

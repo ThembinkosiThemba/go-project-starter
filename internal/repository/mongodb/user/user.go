@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Interface defines the contract for user repository operations.
 type Interface interface {
 	Add(ctx context.Context, user *entity.USER) error
 	GetAll(ctx context.Context) ([]entity.USER, error)
@@ -16,16 +17,21 @@ type Interface interface {
 	Delete(ctx context.Context, email string) error
 }
 
+// UserRepository implements the Interface for MongoDB operations.
 type UserRepository struct {
 	collection *mongo.Collection
 }
 
+// NewOfficerRepository creates a new UserRepository instance.
+// It takes a MongoDB database connection and a collection name as parameters.
 func NewOfficerRepository(db *mongo.Database, collectionName string) *UserRepository {
 	return &UserRepository{
 		collection: db.Collection(collectionName),
 	}
 }
 
+// Add inserts a new user into the MongoDB collection.
+// It checks for existing users with the same email before insertion.
 func (o *UserRepository) Add(ctx context.Context, user *entity.USER) error {
 	filter := bson.M{"email": user.Email}
 	count, _ := o.collection.CountDocuments(ctx, filter)
@@ -39,6 +45,7 @@ func (o *UserRepository) Add(ctx context.Context, user *entity.USER) error {
 	return nil
 }
 
+// GetAll retrieves all users from the MongoDB collection.
 func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 	cursor, err := o.collection.Find(context.Background(), bson.M{})
 	if err != nil {
@@ -54,6 +61,7 @@ func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 	return users, nil
 }
 
+// GetOne retrieves a single user from the MongoDB collection based on the provided email.
 func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER, error) {
 	filter := bson.M{"email": email}
 	var user entity.USER
@@ -64,6 +72,7 @@ func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER
 	return &user, nil
 }
 
+// Delete removes a user from the MongoDB collection based on the provided email.
 func (o *UserRepository) Delete(ctx context.Context, email string) error {
 	filter := bson.M{"email": email}
 	_, err := o.collection.DeleteOne(ctx, filter)
