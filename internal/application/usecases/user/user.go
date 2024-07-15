@@ -4,18 +4,20 @@ import (
 	"context"
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
+	mongodb "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
 	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
 )
 
 // UserUsecase represents the usecase for user-related operations.
 type UserUsecase struct {
-	userRepo postgres.Interface
+	userRepo mongodb.Interface
+
 }
 
 // NewUserUsecase creates a new UserUsecase instance.
 // It takes a postgres.Interface as a parameter to handle database operations.
-func NewUserUsecase(repo postgres.Interface) *UserUsecase {
+func NewUserUsecase(repo mongodb.Interface) *UserUsecase {
 	return &UserUsecase{userRepo: repo}
 }
 

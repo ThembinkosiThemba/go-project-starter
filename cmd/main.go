@@ -17,13 +17,13 @@ func main() {
 	printProjectInfo()
 
 	// Initialize MongoDB repository
-	userRepo, err := config.InitializeRepositoriesMongo()
+	userRepo, err := config.InitializeRepositoriesPostgres()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Initialize user usecase with MongoDB repository
-	userUsecase := config.InitializeUsecasesMongo(userRepo)
+	userUsecase := config.InitializeUsecasesPostgres(userRepo)
 
 	// Set up Gin router
 	r := gin.Default()
