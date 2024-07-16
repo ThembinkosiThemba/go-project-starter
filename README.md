@@ -4,6 +4,22 @@ This is the Golang Project Starter Kit! 🎉 This a simple repository that conta
 
 In this setup, we use the `User` entity as an example, but you can easily replicate and add new entities as required for your specific project needs.
 
+## Table of Contents
+
+1. [Features](#-features)
+2. [Getting Started](#-getting-started)
+3. [Project Setup](#-project-setup)
+4. [Database Setup](#-database-setup)
+   - [MongoDB](#mongodb)
+   - [PostgreSQL](#postgresql)
+5. [Docker Setup](#docker-setup)
+6. [Mixpanel](#mixpanel)
+7. [Logger](#logger)
+8. [Customization](#-customization)
+9. [Testing](#-testing)
+10. [Contributing](#-contributing)
+11. [License](#-license)
+
 ## 🌟 Features
 
 - 🏗️ Domain-Driven Design architecture

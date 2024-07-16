@@ -14,6 +14,8 @@ import (
 // It initializes the database connection, sets up the HTTP server,
 // and starts listening for incoming requests.
 func main() {
+
+
 	// This initialised our logger
 	logger.InitLogger()
 	

@@ -3,10 +3,12 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 	ut "github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
 
 	_ "github.com/lib/pq"
 )
@@ -17,6 +19,10 @@ const (
 	getAll  = "SELECT name, surname, email FROM users"
 	getOne  = "SELECT * FROM users WHERE email = $1"
 	delete  = "DELETE FROM users WHERE email = $1"
+)
+
+var (
+	ErrInternal = errors.New("internal server error")
 )
 
 // Interface defines the contract for user repository operations.
@@ -42,18 +48,21 @@ func NewOfficerRepository(db *sql.DB) *UserRepository {
 func (o *UserRepository) Add(ctx context.Context, user *entity.USER) error {
 	stmt, tx, err := ut.BeginTxP(ctx, o.db, addUser)
 	if err != nil {
-		return err
+		logger.Error(err)
+		return ErrInternal
 	}
 	defer stmt.Close()
 	defer tx.Rollback()
 
 	_, err = stmt.ExecContext(ctx, user.ID, user.Name, user.Surname)
 	if err != nil {
-		return fmt.Errorf("failed to insert: %v", err)
+		logger.Error(err)
+		return errors.New("failed to insert user")
 	}
 
 	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("failed to commit transactions: %v", err)
+		logger.Error(err)
+		return ErrInternal
 	}
 
 	return nil
@@ -63,7 +72,8 @@ func (o *UserRepository) Add(ctx context.Context, user *entity.USER) error {
 func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 	rows, err := ut.PrepareContext(ctx, o.db, getAll)
 	if err != nil {
-		return nil, err
+		logger.Error(err)
+		return nil, ErrInternal
 	}
 	defer rows.Close()
 
@@ -76,12 +86,14 @@ func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 			&user.Surname,
 			&user.Email,
 		); err != nil {
-			return nil, err
+			logger.Error(err)
+			return nil, errors.New("failed to get all users")
 		}
 		users = append(users, user)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, err
+		logger.Error(err)
+		return nil, ErrInternal
 	}
 
 	return users, nil
@@ -91,7 +103,8 @@ func (o *UserRepository) GetAll(ctx context.Context) ([]entity.USER, error) {
 func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER, error) {
 	stmt, err := o.db.PrepareContext(ctx, getOne)
 	if err != nil {
-		return nil, fmt.Errorf("failed to prepare statement: %v", err)
+		logger.Error(err)
+		return nil, ErrInternal
 	}
 	defer stmt.Close()
 
@@ -104,9 +117,11 @@ func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("user not found")
+			logger.Error(err)
+			return nil, errors.New("user not found")
 		}
-		return nil, fmt.Errorf("failed to get record: %v", err)
+		logger.Error(err)
+		return nil, errors.New("failed to get record")
 	}
 	return &user, nil
 }
@@ -115,17 +130,21 @@ func (o *UserRepository) GetOne(ctx context.Context, email string) (*entity.USER
 func (o *UserRepository) Delete(ctx context.Context, email string) error {
 	stmt, tx, err := ut.BeginTxP(ctx, o.db, delete)
 	if err != nil {
-		return fmt.Errorf("failed to begin transaction: %v", err)
+		logger.Error(err)
+		return ErrInternal
 	}
 
 	result, err := stmt.ExecContext(ctx, email)
 	if err != nil {
-		return fmt.Errorf("failed to delete officer: %v", err)
+		logger.Error(err)
+		return errors.New("failed to delete officer")
+		
 	}
 
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
-		return fmt.Errorf("failed to get affected rows: %v", err)
+		logger.Error(err)
+		return ErrInternal
 	}
 
 	if rowsAffected == 0 {
@@ -133,7 +152,8 @@ func (o *UserRepository) Delete(ctx context.Context, email string) error {
 	}
 
 	if err = tx.Commit(); err != nil {
-		return fmt.Errorf("failed to commit transactions: %v", err)
+		logger.Error(err)
+		return ErrInternal
 	}
 
 	return nil

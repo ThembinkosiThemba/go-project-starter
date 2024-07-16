@@ -2,7 +2,6 @@ package validate
 
 import (
 	"errors"
-	"fmt"
 	"regexp"
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
@@ -16,7 +15,7 @@ func IsEmailValid(email string) error {
 	var rxEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{1,64}@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 
 	if len(email) < 3 || len(email) > 30 || !rxEmail.MatchString(email) {
-		return fmt.Errorf("email is not valid")
+		return errors.New("email is not valid")
 	}
 
 	return nil
@@ -24,15 +23,12 @@ func IsEmailValid(email string) error {
 
 func ValidateUser(user *entity.USER) error {
 	if err := validate.Struct(user); err != nil {
-		return fmt.Errorf("missing values for user. Please ensure all fields are filled: %v", err)
+		return errors.New("please fill all values")
 	}
 
 	if err := IsEmailValid(user.Email); err != nil {
 		return err
 	}
 
-	if user.Email == "" || user.Name == "" || user.Surname== "" {
-		return errors.New("file in all values")
-	}
 	return nil
 }

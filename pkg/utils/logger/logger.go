@@ -78,10 +78,19 @@ func logToFile(filename string, entry LogEntry) error {
 	return nil
 }
 
-// getCallerInfo returns the file and line number of the caller
 func getCallerInfo() (string, int) {
 	_, file, line, _ := runtime.Caller(2)
-	return filepath.ToSlash(file), line
+	dir, err := os.Getwd()
+	if err != nil {
+		return filepath.ToSlash(file), line
+	}
+
+	relPath, err := filepath.Rel(dir, file)
+	if err != nil {
+		return filepath.ToSlash(file), line
+	}
+
+	return filepath.ToSlash(relPath), line
 }
 
 func printLogToTerminal(entry LogEntry) {
@@ -101,7 +110,7 @@ func Error(err error) {
 		File:      file,
 		Line:      line,
 		Message:   err.Error(),
-		Status:    "ERROR",
+		Status:    "PENDING",
 	}
 	printLogToTerminal(entry)
 	logToFile(instance.errorFile, entry)
@@ -120,7 +129,7 @@ func Warn(message string) {
 		File:      file,
 		Line:      line,
 		Message:   message,
-		Status:    "WARN",
+		Status:    "PENDING",
 	}
 	printLogToTerminal(entry)
 	logToFile(instance.warnFile, entry)
@@ -139,7 +148,7 @@ func Info(message string) {
 		File:      file,
 		Line:      line,
 		Message:   message,
-		Status:    "INFO",
+		Status:    "Informational",
 	}
 	printLogToTerminal(entry)
 	logToFile(instance.infoFile, entry)
