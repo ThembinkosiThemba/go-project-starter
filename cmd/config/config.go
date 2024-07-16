@@ -32,8 +32,10 @@ func InitializeUsecasesMongo(userRepo *mongoRepo.UserRepository) (userCase *usec
 // InitializeRepositoriesPostgres sets up and returns a PostgreSQL user repository.
 // It establishes a connection to the PostgreSQL database and initializes the user repository.
 func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, err error) {
-	db := postgres.PostgresConn()
-
+	db, err := postgres.PostgresConn()
+if err != nil {
+	return nil, err
+}
 	userRepo = postgresRepo.NewOfficerRepository(db)
 	return userRepo, nil
 }

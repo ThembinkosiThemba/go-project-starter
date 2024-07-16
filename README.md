@@ -111,6 +111,12 @@ CMD [ "social-media-app" ]
 
 This project also has support for event tracking using Mixpanel. Login to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
+### Logger
+This projects now supports a custom logger. Features include:
+- saving logs to files (errors, warnings and infos). These logs can be stored in their separate files. Check `/logs` folder once you use any of the logs.
+- print's out logs in the terminal
+
+
 ## 🛠️ Customization
 
 To add a new entity:

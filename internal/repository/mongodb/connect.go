@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/http"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -35,7 +36,7 @@ func MongoConnect(dbName string) (*mongo.Database, error) {
 		return nil, err
 	}
 
-	log.Println("Connected to Mongo DB")
+	logger.Info("Connected to Mongo DB")
 
 	db := client.Database(dbName)
 	return db, nil

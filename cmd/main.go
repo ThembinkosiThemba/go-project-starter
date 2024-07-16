@@ -6,6 +6,7 @@ import (
 
 	"github.com/ThembinkosiThemba/go-project-starter/cmd/config"
 	"github.com/ThembinkosiThemba/go-project-starter/internal/routes"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +14,9 @@ import (
 // It initializes the database connection, sets up the HTTP server,
 // and starts listening for incoming requests.
 func main() {
+	// This initialised our logger
+	logger.InitLogger()
+	
 	// Print project information (can be removed for production use)
 	printProjectInfo()
 
@@ -34,11 +38,9 @@ func main() {
 		routes.Cors(),
 	)
 
-	// Configure routes
 	app := routes.Config{Router: r}
 	app.Routes(userUsecase)
 
-	// Start the server
 	r.Run(":8080")
 }
 

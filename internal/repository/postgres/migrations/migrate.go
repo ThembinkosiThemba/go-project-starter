@@ -4,11 +4,32 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres"
+	custom_response "github.com/ThembinkosiThemba/go-project-starter/pkg/http"
+	"github.com/gin-gonic/gin"
 )
+
+func MigrateEndPoint(c *gin.Context) {
+	db, err := postgres.PostgresConn()
+	if err != nil {
+		return
+	}
+
+	err = Migrate(db)
+	if err != nil {
+		return
+	}
+
+	db.Close()
+
+	custom_response.WriteJSON(c, http.StatusOK, 1, nil, "migrations ran successfully")
+}
 
 func Migrate(db *sql.DB) error {
 	path := "internal/repository/postgres/migrations"

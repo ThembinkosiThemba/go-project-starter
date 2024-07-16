@@ -5,15 +5,15 @@ import (
 	"log"
 	"os"
 
-	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/migrations"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-func PostgresConn() *sql.DB {
+func PostgresConn() (*sql.DB, error) {
 	err := godotenv.Load(".env")
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	// remember to set the env variable on your file
@@ -25,13 +25,10 @@ func PostgresConn() *sql.DB {
 
 	if err = db.Ping(); err != nil {
 		log.Fatalf("failed to connect to postgres: %v", err)
-		return nil
+		return nil, err
 	}
 
-	if err = migrations.Migrate(db); err != nil {
-		log.Println("failed to perform migrations", err)
-	}
-	log.Println("connected to postgres")
+	logger.Info("connected to postgres")
 
-	return db
+	return db, nil
 }
