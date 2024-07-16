@@ -6,7 +6,7 @@ import (
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 	mongodb "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
 
-	// postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
+	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
 )
 
