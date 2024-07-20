@@ -6,6 +6,7 @@ import (
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/dto"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/events"
 	httpRes "github.com/ThembinkosiThemba/go-project-starter/pkg/http"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
 
 	"net/http"
 
@@ -29,8 +30,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
 	var user domain.USER
-	if err := c.BindJSON(&user); err != nil {
-		httpRes.WriteJSON(c, http.StatusBadRequest, 0, nil, err.Error())
+	if err := validate.BindDataToJson(c, &user); err != nil {
 		return
 	}
 
@@ -52,8 +52,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
 	var request dto.Login
-	if err := c.BindJSON(&request); err != nil {
-		httpRes.WriteJSON(c, http.StatusBadRequest, 0, nil, err.Error())
+	if err := validate.BindDataToJson(c, &request); err != nil {
 		return
 	}
 
@@ -89,8 +88,7 @@ func (h *UserHandler) Delete(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
 	var request dto.Email
-	if err := c.BindJSON(&request); err != nil {
-		httpRes.WriteJSON(c, http.StatusBadRequest, 0, nil, err.Error())
+	if err := validate.BindDataToJson(c, &request); err != nil {
 		return
 	}
 

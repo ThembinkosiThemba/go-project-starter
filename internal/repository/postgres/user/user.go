@@ -138,7 +138,7 @@ func (o *UserRepository) Delete(ctx context.Context, email string) error {
 	if err != nil {
 		logger.Error(err)
 		return errors.New("failed to delete officer")
-		
+
 	}
 
 	rowsAffected, err := result.RowsAffected()

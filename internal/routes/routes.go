@@ -21,8 +21,8 @@ func (app *Config) Routes(useCase *usecase.UserUsecase) {
 	r.POST("/register", h.Register)
 	r.POST("/login", h.Login)
 
-	r.GET("/", h.GetAllUsers)
-	r.DELETE("/", h.Delete)
+	r.GET("", h.GetAllUsers)
+	r.DELETE("", h.Delete)
 
 	r.POST("/migrate-up", migrations.MigrateEndPoint) // incase you want to use postgres database
 }

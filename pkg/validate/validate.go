@@ -5,9 +5,13 @@ import (
 	"regexp"
 
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
+	"github.com/gin-gonic/gin"
 
 	"github.com/go-playground/validator/v10"
 )
+
+var ErrInternalServerError = errors.New("internal server error, something went wrong")
 
 var validate = validator.New()
 
@@ -30,5 +34,13 @@ func ValidateUser(user *entity.USER) error {
 		return err
 	}
 
+	return nil
+}
+
+func BindDataToJson(c *gin.Context, data interface{}) error {
+	if err := c.ShouldBindJSON(data); err != nil {
+		logger.Error(err)
+		return ErrInternalServerError
+	}
 	return nil
 }
