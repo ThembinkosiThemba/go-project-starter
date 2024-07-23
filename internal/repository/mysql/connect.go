@@ -1,4 +1,4 @@
-package postgres
+package mysql
 
 import (
 	"database/sql"
@@ -6,23 +6,23 @@ import (
 	"os"
 
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
-	_ "github.com/lib/pq"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-func PostgresConn() (*sql.DB, error) {
+func MySqlConn() (*sql.DB, error) {
 	// remember to set the env variable on your file
-	dbUrl := os.Getenv("POSTGRES_URL")
-	db, err := sql.Open("postgres", dbUrl)
+	dbUrl := os.Getenv("MY_SQL")
+	db, err := sql.Open("mysql", dbUrl)
 	if err != nil {
 		log.Fatalf("failed to open database: %v", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Fatalf("failed to connect to postgres: %v", err)
+		log.Fatalf("failed to connect to mysql: %v", err)
 		return nil, err
 	}
 
-	logger.Info("connected to postgres")
+	logger.Info("connected to mysql")
 
 	return db, nil
 }

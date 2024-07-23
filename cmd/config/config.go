@@ -2,8 +2,11 @@ package config
 
 import (
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
+
 	mongo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb"
 	mongoRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
+	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/mysql"
+	sqlRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mysql/user"
 	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres"
 	postgresRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 
@@ -18,7 +21,7 @@ func InitializeRepositoriesMongo() (userRepo *mongoRepo.UserRepository, err erro
 		return nil, err
 	}
 
-	userRepo = mongoRepo.NewOfficerRepository(db, "users")
+	userRepo = mongoRepo.NewUserRepository(db, "users")
 	return userRepo, nil
 }
 
@@ -33,16 +36,34 @@ func InitializeUsecasesMongo(userRepo *mongoRepo.UserRepository) (userCase *usec
 // It establishes a connection to the PostgreSQL database and initializes the user repository.
 func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, err error) {
 	db, err := postgres.PostgresConn()
-if err != nil {
-	return nil, err
-}
-	userRepo = postgresRepo.NewOfficerRepository(db)
+	if err != nil {
+		return nil, err
+	}
+	userRepo = postgresRepo.NewUserRepository(db)
 	return userRepo, nil
 }
 
 // InitializeUsecasesPostgres creates and returns a user usecase with a PostgreSQL repository.
 // It takes a PostgreSQL user repository as input and initializes the user usecase.
 func InitializeUsecasesPostgres(userRepo *postgresRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
+	userUseCase = usecase.NewUserUsecase(userRepo)
+	return userUseCase
+}
+
+// InitializeRepositoriesMySQL sets up and returns a MYSQL user repository.
+// It establishes a connection to the MYSQL database and initializes the user repository.
+func InitializeRepositoriesMySQL() (userRepo *sqlRepo.UserRepository, err error) {
+	db, err := mysql.MySqlConn()
+	if err != nil {
+		return nil, err
+	}
+	userRepo = sqlRepo.NewUserRepository(db)
+	return userRepo, nil
+}
+
+// InitializeUsecasesMySQL creates and returns a user usecase with a MYSQL repository.
+// It takes a MYSQL user repository as input and initializes the user usecase.
+func InitializeUsecasesMySQL(userRepo *sqlRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
 	userUseCase = usecase.NewUserUsecase(userRepo)
 	return userUseCase
 }

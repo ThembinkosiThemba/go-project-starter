@@ -1,4 +1,4 @@
-package postgres
+package mysql
 
 import (
 	"context"
@@ -15,10 +15,10 @@ import (
 
 // SQL query constants
 const (
-	addUser = "INSERT INTO users (name, surname, email) VALUES ($1, $2, $3)"
+	addUser = "INSERT INTO users (name, surname, email) VALUES (?, ?, ?)"
 	getAll  = "SELECT name, surname, email FROM users"
-	getOne  = "SELECT * FROM users WHERE email = $1"
-	delete  = "DELETE FROM users WHERE email = $1"
+	getOne  = "SELECT * FROM users WHERE email = ?"
+	delete  = "DELETE FROM users WHERE email = ?"
 )
 
 var (

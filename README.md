@@ -28,7 +28,7 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 - 🐳 Docker support which makes it easy to deploy project on multiple platforms like GCP, AWS etc
 - 🗄️ Database setup and integration
   - 🍃 MongoDB support
-  - 🐘 PostgreSQL support with advanced features:
+  - 🐬My SQL and 🐘PostgreSQL support with advanced features:
     - Transaction handling
     - Prepared statements
     - Database migrations
@@ -66,6 +66,7 @@ go run cmd/main.go
 ## 💾 Database Setup
 
 Depending on which database you are going to be using, make sure you update the `main.go` initialization lines so it works perfectly for your choice. By default, this project uses `Mongo DB` and this code is as follows:
+
 ```golang
 userRepo, err := config.InitializeRepositoriesMongo()
 if err != nil {
@@ -78,6 +79,7 @@ userUsecase := config.InitializeUsecasesMongo(userRepo)
 Notice we are using these two mongo functions which are `InitializeRepositoriesMongo` and `InitializeUsecasesMongo`
 
 If for example you want to use Postgres, you will update these functions and use `InitializeRepositoriesPostgres` and `InitializeUsecasesPostgres`:
+
 ```golang
 userRepo, err := config.InitializeRepositoriesPostgres()
 if err != nil {
@@ -87,6 +89,7 @@ if err != nil {
 userUsecase := config.InitializeUsecasesPostgres(userRepo)
 
 ```
+
 ### MongoDB
 
 1. Ensure you have MongoDB installed and running. Alternatively, you can use [Mongo DB Atlas](https://www.mongodb.com/cloud/atlas/register), create a project, and get the connection string.
@@ -96,10 +99,17 @@ userUsecase := config.InitializeUsecasesPostgres(userRepo)
 
 1. Install PostgreSQL if you haven't already.
 2. Create a new database for your project.
-3. Update the PostgreSQL connection details in your `.env` file
-4. The migrations will automatically run when you run the project.
+3. Update the PostgreSQL connection details in your `.env` file.
+4. Use the migration endpoint via curl or postman to run all necessary migrations.
 
 Alternatively, you can use solutions like [Aiven](https://aiven.io/) which has completely hosted db solutions. Think of it as Atlas, and it's completely free.
+
+### MYSQL
+
+1. Install MYSQL if you haven't already. You can also run mysql via docker and use that connection instead.
+2. Create a new database for your project.
+3. Update the MYSQL connection details in your `.env` file.
+4. Use the migration endpoint via curl or postman to run all necessary migrations.
 
 ### Docker setup
 
@@ -128,10 +138,11 @@ CMD [ "social-media-app" ]
 This project also has support for event tracking using Mixpanel. Login to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
 ### Logger
+
 This projects now supports a custom logger. Features include:
+
 - saving logs to files (errors, warnings and infos). These logs can be stored in their separate files. Check `/logs` folder once you use any of the logs.
 - print's out logs in the terminal
-
 
 ## 🛠️ Customization
 

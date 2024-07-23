@@ -10,13 +10,13 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres"
+	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/mysql"
 	custom_response "github.com/ThembinkosiThemba/go-project-starter/pkg/http"
 	"github.com/gin-gonic/gin"
 )
 
-func PostgresMigration(c *gin.Context) {
-	db, err := postgres.PostgresConn()
+func MySqlMigrations(c *gin.Context) {
+	db, err := mysql.MySqlConn()
 	if err != nil {
 		return
 	}

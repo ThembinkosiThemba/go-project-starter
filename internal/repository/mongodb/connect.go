@@ -6,17 +6,11 @@ import (
 
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/http"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func MongoConnect(dbName string) (*mongo.Database, error) {
-	err := godotenv.Load(".env")
-	if err != nil {
-		return nil, err
-	}
-
 	// Remember to create an env file and put your variables
 	mongoUri := os.Getenv("MONGO_URL")
 

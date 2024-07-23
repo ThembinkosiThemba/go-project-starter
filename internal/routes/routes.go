@@ -4,7 +4,8 @@ import (
 	"time"
 
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
-	"github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/migrations"
+	mysql "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mysql/migrations"
+	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/migrations"
 	"github.com/ThembinkosiThemba/go-project-starter/internal/routes/handlers"
 
 	"github.com/gin-contrib/cors"
@@ -24,7 +25,9 @@ func (app *Config) Routes(useCase *usecase.UserUsecase) {
 	r.GET("", h.GetAllUsers)
 	r.DELETE("", h.Delete)
 
-	r.POST("/migrate-up", migrations.MigrateEndPoint) // incase you want to use postgres database
+	r.POST("/postgres/migrate-up", postgres.PostgresMigration) // incase you want to use postgres database
+	r.POST("/mysql/migrate-up", mysql.MySqlMigrations)         // incase you want to use mysql database
+
 }
 
 func Cors() gin.HandlerFunc {

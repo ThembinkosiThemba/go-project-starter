@@ -6,6 +6,7 @@ import (
 
 	"github.com/ThembinkosiThemba/go-project-starter/cmd/config"
 	"github.com/ThembinkosiThemba/go-project-starter/internal/routes"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
 	"github.com/gin-gonic/gin"
 )
@@ -14,22 +15,26 @@ import (
 // It initializes the database connection, sets up the HTTP server,
 // and starts listening for incoming requests.
 func main() {
-
+	// setting gin mode to release. You can comment / remove this line out
+	gin.SetMode(gin.ReleaseMode)
 
 	// This initialised our logger
 	logger.InitLogger()
-	
+
+	// loading the env file
+	utils.LoadEnv()
+
 	// Print project information (can be removed for production use)
 	printProjectInfo()
 
 	// Initialize MongoDB repository
-	userRepo, err := config.InitializeRepositoriesPostgres()
+	userRepo, err := config.InitializeRepositoriesMongo()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Initialize user usecase with MongoDB repository
-	userUsecase := config.InitializeUsecasesPostgres(userRepo)
+	userUsecase := config.InitializeUsecasesMongo(userRepo)
 
 	// Set up Gin router
 	r := gin.Default()
@@ -52,11 +57,13 @@ func printProjectInfo() {
 ║                        Golang Project Starter Kit                        ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 
+
  🚀 Current Features:
  ┌────────────────────────────────────────────────────────────────────────┐
  │ ✅ Domain-Driven Design Architecture                                   │
  │ ✅ MongoDB Support                                                     │
  │ ✅ PostgreSQL Support                                                  │
+ │ ✅ MySQL Support                                                       │
  │ ✅ HTTP REST APIs (Gin-Gonic)                                          │
  │ ✅ Basic Input Validation                                              │
  │ ✅ Modular and Extensible Codebase                                     │

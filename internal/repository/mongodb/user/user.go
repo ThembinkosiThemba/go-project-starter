@@ -27,7 +27,7 @@ type UserRepository struct {
 
 // NewOfficerRepository creates a new UserRepository instance.
 // It takes a MongoDB database connection and a collection name as parameters.
-func NewOfficerRepository(db *mongo.Database, collectionName string) *UserRepository {
+func NewUserRepository(db *mongo.Database, collectionName string) *UserRepository {
 	return &UserRepository{
 		collection: db.Collection(collectionName),
 	}
