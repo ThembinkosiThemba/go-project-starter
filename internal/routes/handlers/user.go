@@ -2,9 +2,8 @@ package handlers
 
 import (
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
-	domain "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
+	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/dto"
-	"github.com/ThembinkosiThemba/go-project-starter/pkg/events"
 	httpRes "github.com/ThembinkosiThemba/go-project-starter/pkg/http"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
 
@@ -29,7 +28,7 @@ func NewUserHandler(useCase *usecase.UserUsecase) *UserHandler {
 func (h *UserHandler) Register(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
-	var user domain.USER
+	var user entity.USER
 	if err := validate.BindDataToJson(c, &user); err != nil {
 		return
 	}
@@ -38,9 +37,6 @@ func (h *UserHandler) Register(c *gin.Context) {
 		httpRes.WriteJSON(c, http.StatusInternalServerError, 0, nil, err.Error())
 		return
 	}
-
-	events.TrackEvents("SIGNUP", user.ID, events.CreateEventProperties(user))
-	events.UpdateUserProfile(user)
 
 	httpRes.WriteJSON(c, http.StatusCreated, 1, user, "OK")
 }
@@ -61,8 +57,6 @@ func (h *UserHandler) Login(c *gin.Context) {
 		httpRes.WriteJSON(c, http.StatusInternalServerError, 0, nil, err.Error())
 		return
 	}
-
-	events.TrackEvents("LOGIN", user.ID, events.CreateEventProperties(user))
 
 	httpRes.WriteJSON(c, http.StatusOK, 1, user, "OK")
 }
@@ -96,8 +90,6 @@ func (h *UserHandler) Delete(c *gin.Context) {
 		httpRes.WriteJSON(c, http.StatusInternalServerError, 0, nil, err.Error())
 		return
 	}
-
-	events.TrackEvents("DELETE_ACC", request.Email, nil)
 
 	httpRes.WriteJSON(c, http.StatusOK, 1, nil, "user deleted successfully")
 }

@@ -137,6 +137,10 @@ CMD [ "social-media-app" ]
 
 This project also has support for event tracking using Mixpanel. Login to [Mixpanel](mixpanel.com) and create a project, get the project id in the settings and update your env file as well.
 
+### Emails
+
+This project also has support for emailing using Sendgrid. Login to [Sendgrid](https://login.sendgrid.com/) and create a project, get the api key in the settings and update your env file as well.
+
 ### Logger
 
 This projects now supports a custom logger. Features include:

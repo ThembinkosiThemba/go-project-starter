@@ -2,6 +2,7 @@ package config
 
 import (
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
+	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
 
 	mongo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb"
 	mongoRepo "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
@@ -28,7 +29,8 @@ func InitializeRepositoriesMongo() (userRepo *mongoRepo.UserRepository, err erro
 // InitializeUsecasesMongo creates and returns a user usecase with a MongoDB repository.
 // It takes a MongoDB user repository as input and initializes the user usecase.
 func InitializeUsecasesMongo(userRepo *mongoRepo.UserRepository) (userCase *usecase.UserUsecase) {
-	userCase = usecase.NewUserUsecase(userRepo)
+	emails := utils.NewEmailService()
+	userCase = usecase.NewUserUsecase(userRepo, emails)
 	return userCase
 }
 
@@ -46,7 +48,8 @@ func InitializeRepositoriesPostgres() (userRepo *postgresRepo.UserRepository, er
 // InitializeUsecasesPostgres creates and returns a user usecase with a PostgreSQL repository.
 // It takes a PostgreSQL user repository as input and initializes the user usecase.
 func InitializeUsecasesPostgres(userRepo *postgresRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
-	userUseCase = usecase.NewUserUsecase(userRepo)
+	emails := utils.NewEmailService()
+	userUseCase = usecase.NewUserUsecase(userRepo, emails)
 	return userUseCase
 }
 
@@ -64,6 +67,7 @@ func InitializeRepositoriesMySQL() (userRepo *sqlRepo.UserRepository, err error)
 // InitializeUsecasesMySQL creates and returns a user usecase with a MYSQL repository.
 // It takes a MYSQL user repository as input and initializes the user usecase.
 func InitializeUsecasesMySQL(userRepo *sqlRepo.UserRepository) (userUseCase *usecase.UserUsecase) {
-	userUseCase = usecase.NewUserUsecase(userRepo)
+	emails := utils.NewEmailService()
+	userUseCase = usecase.NewUserUsecase(userRepo, emails)
 	return userUseCase
 }

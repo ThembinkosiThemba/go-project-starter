@@ -27,13 +27,13 @@ func main() {
 	// Print project information (can be removed for production use)
 	printProjectInfo()
 
-	// Initialize MongoDB repository
+	// Initialize repository.
 	userRepo, err := config.InitializeRepositoriesMongo()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Initialize user usecase with MongoDB repository
+	// Initialize user usecase with repository
 	userUsecase := config.InitializeUsecasesMongo(userRepo)
 
 	// Set up Gin router
