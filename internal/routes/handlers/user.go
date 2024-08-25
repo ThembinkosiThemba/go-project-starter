@@ -2,6 +2,7 @@ package handlers
 
 import (
 	usecase "github.com/ThembinkosiThemba/go-project-starter/internal/application/usecases/user"
+	"github.com/ThembinkosiThemba/go-project-starter/internal/auth"
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/dto"
 	httpRes "github.com/ThembinkosiThemba/go-project-starter/pkg/http"
@@ -52,12 +53,13 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	user, err := h.useCase.GetUser(ctx, request.Email, request.Password)
+	user, token, refreshToken, err := h.useCase.GetUser(ctx, request.Email, request.Password)
 	if err != nil {
 		httpRes.WriteJSON(c, http.StatusInternalServerError, 0, nil, err.Error())
 		return
 	}
 
+	auth.SetTokensAsCookies(c, token, refreshToken)
 	httpRes.WriteJSON(c, http.StatusOK, 1, user, "OK")
 }
 

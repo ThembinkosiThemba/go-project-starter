@@ -3,11 +3,12 @@ package usecase
 import (
 	"context"
 
+	"github.com/ThembinkosiThemba/go-project-starter/internal/auth"
 	entity "github.com/ThembinkosiThemba/go-project-starter/internal/entity/user"
 	mongodb "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mongodb/user"
 
-	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 	mysql "github.com/ThembinkosiThemba/go-project-starter/internal/repository/mysql/user"
+	postgres "github.com/ThembinkosiThemba/go-project-starter/internal/repository/postgres/user"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/events"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/validate"
@@ -52,19 +53,24 @@ func (uc *UserUsecase) AddUser(ctx context.Context, user *entity.USER) error {
 // GetUser retrieves a user from the system based on email and password.
 // It first validates the email before querying the repository.
 // Note: The password parameter is currently unused in this implementation.
-func (uc *UserUsecase) GetUser(ctx context.Context, email, password string) (*entity.USER, error) {
+func (uc *UserUsecase) GetUser(ctx context.Context, email, password string) (*entity.USER, string, string, error) {
 	if err := validate.IsEmailValid(email); err != nil {
-		return nil, err
+		return nil,"", "", err
 	}
 
 	user, err := uc.userRepo.GetOne(ctx, email)
 	if err != nil {
-		return nil, err
+		return nil,"", "", err
+	}
+
+	token, refreshToken,err  := auth.GenerateTokens(user.Email, user.Name, user.Surname)
+	if err != nil {
+		return nil,"", "", err
 	}
 
 	events.TrackEvents("LOGIN", user.ID, events.CreateEventProperties(user))
 
-	return user, nil
+	return user,token, refreshToken, nil
 }
 
 // GetAllUsers retrieves all users from the system.

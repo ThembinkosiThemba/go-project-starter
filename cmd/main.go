@@ -67,6 +67,7 @@ func printProjectInfo() {
  │ ✅ HTTP REST APIs (Gin-Gonic)                                          │
  │ ✅ Basic Input Validation                                              │
  │ ✅ Modular and Extensible Codebase                                     │
+ │ ✅ JWT Authentication for users	                                     │
  │ ✅ CRUD Operations                                                     │
  │ ✅ Docker Support                                                      │
  │ ✅ Event Tracking (Mixpanel)                                           │
@@ -74,9 +75,6 @@ func printProjectInfo() {
 
  📋 TODO:
  ┌────────────────────────────────────────────────────────────────────────┐
- │ ⬜ Implement Authentication System                                     │
- │ ⬜ Add More Database Options                                           │
- │ ⬜ Enhance Error Handling                                              │
  │ ⬜ Implement Caching Mechanism                                         │
  │ ⬜ Add Comprehensive Testing Suite                                     │
  └────────────────────────────────────────────────────────────────────────┘
