@@ -8,6 +8,7 @@ import (
 	"github.com/ThembinkosiThemba/go-project-starter/internal/routes"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils"
 	"github.com/ThembinkosiThemba/go-project-starter/pkg/utils/logger"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,11 +43,15 @@ func main() {
 	// Add middleware
 	r.Use(
 		gin.Logger(),
-		routes.Cors(),
+		cors.Default(), // we are using the default config for cors to enable cross origin requests
+		// feel free to update this to your liking
 	)
 
-	app := routes.Config{Router: r}
-	app.Routes(userUsecase)
+	app := routes.Config{
+		Router: r,
+		User:   userUsecase,
+	}
+	app.Routes()
 
 	r.Run(":8080")
 }

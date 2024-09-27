@@ -29,6 +29,7 @@ func NewUserHandler(useCase *usecase.UserUsecase) *UserHandler {
 func (h *UserHandler) Register(c *gin.Context) {
 	var ctx, cancel = httpRes.Context()
 	defer cancel()
+
 	var user entity.USER
 	if err := validate.BindDataToJson(c, &user); err != nil {
 		return

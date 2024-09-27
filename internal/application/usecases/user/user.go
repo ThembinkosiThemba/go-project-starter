@@ -1,5 +1,7 @@
 package usecase
 
+// if there are imports you are not using here, kindly remove them, like mysql, postgres or mongodb.
+// those that are unused are left here by default and you can remove them once you have chosen which database to use
 import (
 	"context"
 
