@@ -1,10 +1,10 @@
-# 🚀 Golang Project Starter Kit
+## Golang Project Starter Kit
 
-This is the Golang Project Starter Kit! 🎉 This a simple repository that contains starter code for a Golang project, following a Domain-Driven Design (DDD) approach. It simplifies the process of setting up a new project from scratch, allowing you to focus on building your application's core functionality.
+This a repository that contains starter code for a Golang project, following a Domain-Driven Design (DDD) approach. It simplifies the process of setting up a new project from scratch, allowing you to focus on building your application's core functionality.
 
 In this setup, we use the `User` entity as an example, but you can easily replicate and add new entities as required for your specific project needs.
 
-## Table of Contents
+### Table of Contents
 
 1. [Features](#-features)
 2. [Getting Started](#-getting-started)
@@ -20,7 +20,7 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 10. [Contributing](#-contributing)
 11. [License](#-license)
 
-## 🌟 Features
+### 🌟 Features
 
 - 🏗️ Domain-Driven Design architecture
 - ✅ Complete CRUD (Create, Read, Update, Delete) operations
@@ -35,9 +35,8 @@ In this setup, we use the `User` entity as an example, but you can easily replic
 - 🌐 HTTP REST APIs using Gin-Gonic framework
   - Custom response handling
 - 🛡️ Basic input validation
-- 🧩 Modular and extensible codebase
 
-## 🚀 Getting Started
+### Getting Started
 
 1. Clone the repository:
 
@@ -59,11 +58,17 @@ If you don't have `Make` installed, you can run
 go run cmd/main.go
 ```
 
+Or install `Make` by running
+
+```bash
+sudo apt install make
+```
+
 3. Set up your environment variables (copy `.env.example` to `.env` and fill in your variables)
 
-## 🏗️ Project Setup
+### 🏗️ Project Setup
 
-## 💾 Database Setup
+#### 💾 Database Setup
 
 Depending on which database you are going to be using, make sure you update the `main.go` initialization lines so it works perfectly for your choice. By default, this project uses `Mongo DB` and this code is as follows:
 
@@ -92,7 +97,7 @@ userUsecase := config.InitializeUsecasesPostgres(userRepo)
 
 ### MongoDB
 
-1. Ensure you have MongoDB installed and running. Alternatively, you can use [Mongo DB Atlas](https://www.mongodb.com/cloud/atlas/register), create a project, and get the connection string.
+1. Ensure you have MongoDB installed and running locally (or via docker). Alternatively, you can use [Mongo DB Atlas](https://www.mongodb.com/cloud/atlas/register), create a project, and get the connection string.
 2. Update the MongoDB connection string in your `.env` file
 
 ### PostgreSQL
@@ -102,7 +107,7 @@ userUsecase := config.InitializeUsecasesPostgres(userRepo)
 3. Update the PostgreSQL connection details in your `.env` file.
 4. Use the migration endpoint via curl or postman to run all necessary migrations.
 
-Alternatively, you can use solutions like [Aiven](https://aiven.io/) which has completely hosted db solutions. Think of it as Atlas, and it's completely free.
+Alternatively, you can use solutions like [Aiven](https://aiven.io/) which has completely hosted db solutions.
 
 ### MYSQL
 
@@ -121,16 +126,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /go-project-starter ./cmd/main.go
 and
 
 CMD [ "/go-project-starter" ]
-```
-
-If you are building say `social-media-app`, then you should have:
-
-```Dockerfile
-RUN CGO_ENABLED=0 GOOS=linux go build -o /social-media-app ./cmd/main.go
-
-and
-
-CMD [ "social-media-app" ]
 ```
 
 ### Mixpanel
@@ -157,10 +152,6 @@ To add a new entity:
 3. Create use cases in `internal/application/usecase`
 4. Add HTTP handlers in `internal/routes/handler`
 5. Update routes in `internal/routes/handler/routes.go`
-
-## 🧪 Testing
-
-Coming soon...
 
 ## 🤝 Contributing
 
