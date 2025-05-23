@@ -19,6 +19,30 @@ type Interface interface {
 	Delete(ctx context.Context, email string) error
 }
 
+// Interface defines the contract for user repository operations.
+type Interface2 interface {
+	Add(ctx context.Context, user *entity.USER) error
+	GetAll(ctx context.Context) ([]entity.USER, error)
+	GetOne(ctx context.Context, email string) (*entity.USER, error)
+	Delete(ctx context.Context, email string) error
+}
+
+// Interface defines the contract for user repository operations.
+type Interface3 interface {
+	Add(ctx context.Context, user *entity.USER) error
+	GetAll(ctx context.Context) ([]entity.USER, error)
+	GetOne(ctx context.Context, email string) (*entity.USER, error)
+	Delete(ctx context.Context, email string) error
+}
+
+// Interface defines the contract for user repository operations.
+type Interface4 interface {
+	Add(ctx context.Context, user *entity.USER) error
+	GetAll(ctx context.Context) ([]entity.USER, error)
+	GetOne(ctx context.Context, email string) (*entity.USER, error)
+	Delete(ctx context.Context, email string) error
+}
+
 // UserRepository implements the Interface for MongoDB operations.
 type UserRepository struct {
 	collection *mongo.Collection
