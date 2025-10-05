@@ -57,22 +57,22 @@ func (uc *UserUsecase) AddUser(ctx context.Context, user *entity.USER) error {
 // Note: The password parameter is currently unused in this implementation.
 func (uc *UserUsecase) GetUser(ctx context.Context, email, password string) (*entity.USER, string, string, error) {
 	if err := validate.IsEmailValid(email); err != nil {
-		return nil,"", "", err
+		return nil, "", "", err
 	}
 
 	user, err := uc.userRepo.GetOne(ctx, email)
 	if err != nil {
-		return nil,"", "", err
+		return nil, "", "", err
 	}
 
-	token, refreshToken,err  := auth.GenerateTokens(user.Email, user.Name, user.Surname)
+	token, refreshToken, err := auth.GenerateTokens(user.Email, user.Name, user.Surname)
 	if err != nil {
-		return nil,"", "", err
+		return nil, "", "", err
 	}
 
 	events.TrackEvents("LOGIN", user.ID, events.CreateEventProperties(user))
 
-	return user,token, refreshToken, nil
+	return user, token, refreshToken, nil
 }
 
 // GetAllUsers retrieves all users from the system.

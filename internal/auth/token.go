@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -51,7 +50,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,
 		&SignedDetails{},
-		func(token *jwt.Token) (interface{}, error) {
+		func(token *jwt.Token) (any, error) {
 			return []byte(SECRET_KEY), nil
 		},
 	)
@@ -69,7 +68,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 
 	// Check if the token is expired
 	if claims.ExpiresAt != nil && claims.ExpiresAt.Time.Before(time.Now()) {
-		msg = fmt.Sprintf("token is expired")
+		msg = "token is expired"
 		return
 	}
 
